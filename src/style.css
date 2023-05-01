@@ -47,8 +47,8 @@ body {
 
 .annotation .text-input {
   font-family: 'IBMPlexSans';
-  /* background-color: transparent;
-  border: none;
+   background-color: aliceblue;
+  /*border: none;
   outline: none; */
   outline: none;
 }

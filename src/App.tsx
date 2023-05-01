@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import OpenSeadragon from 'openseadragon';
+import OpenSeadragonViewerInputHook from '@openseadragon-imaging/openseadragon-viewerinputhook';
+
 import PinpointTool from './tools/PinPointTool';
+import TextTool from './tools/TextTool';
 import './style.css';
 import { Radio, Input, Modal } from 'antd';
 const { TextArea } = Input;
@@ -47,8 +50,21 @@ export default function App() {
     });
     setViewer(openSeaDragonViewer);
 
+    new OpenSeadragonViewerInputHook({
+      viewer: openSeaDragonViewer,
+      hooks: [
+        { tracker: 'viewer', handler: 'keyHandler', hookHandler: onViewerKey },
+        { tracker: 'viewer', handler: 'keyUpHandler', hookHandler: onViewerKey },
+        { tracker: 'viewer', handler: 'keyDownHandler', hookHandler: onViewerKey },
+      ],
+    });
+    function onViewerKey(event) {
+      event.stopHandlers = true;
+      event.preventDefaultAction = true;
+    }
 
     const pinpointTool = new PinpointTool(openSeaDragonViewer);
+    const textTool = new TextTool(openSeaDragonViewer);
     openSeaDragonViewer.addHandler('canvas-click', function (event) {
       if (event.quick) {
         const point = event.position;
@@ -57,20 +73,11 @@ export default function App() {
             point,
           );
         console.log(vp);
-        const existingTool = localStorage.getItem(drawingToolKey);
-        if (existingTool === 'dot') {
-          //dot
-        }
-        if (existingTool === 'image') {
-          //image
-        }
-        if (existingTool === 'pin') {
-          //pin
-          pinpointTool.setCurrentTool("pin");
-        }
-        if (existingTool === 'text') {
-          setIsModalOpen(true);
-        }
+
+        pinpointTool.setCurrentTool("pin");
+        textTool.setCurrentTool("text", 12, "green");
+
+
       }
     });
     return () => openSeaDragonViewer.destroy();

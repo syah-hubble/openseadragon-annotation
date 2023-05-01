@@ -1,5 +1,6 @@
 import  {   Placement, Point    } from 'openseadragon';
 import DrawingTool, { Drawing } from './DrawingTool';
+import { drawingToolKey } from 'src/App';
  
 const pin = "https://res.cloudinary.com/shangyilim/image/upload/v1682511949/pin.png";
 
@@ -10,7 +11,8 @@ export default class PinpointTool extends DrawingTool {
  
     viewer.addHandler('canvas-click', (event) => {
       console.log('canvas-click', event, event.quick);
-      if (this.tool !== 'pin') {
+      const existingTool = localStorage.getItem(drawingToolKey);
+      if (existingTool !== 'pin') {
         return;
       }
 
