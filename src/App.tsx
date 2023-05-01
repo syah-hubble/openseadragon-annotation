@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import OpenSeadragon from 'openseadragon'; 
+import OpenSeadragon from 'openseadragon';
 import './style.css';
-import Overlay from './utils';
-import { Radio,Input,Modal } from 'antd';
+import { Radio, Input, Modal } from 'antd';
 const { TextArea } = Input;
 
 const EXAMPLE_IMAGE = {
@@ -14,13 +13,13 @@ export const drawingToolKey = 'drawingTool';
 
 export default function App() {
   const imgEl = useRef<HTMLImageElement>(null);
-  const [inputValue, setInputValue] = React.useState("");
+  const [inputValue, setInputValue] = React.useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [activeShape, setActiveShape] = useState<
     'dot' | 'image' | 'pin' | 'text' | undefined
   >(localStorage.getItem(drawingToolKey) as 'dot' | 'image');
-  const [viewer, setViewer] = useState<any>(null); 
+  const [viewer, setViewer] = useState<any>(null);
   const imagesJson = localStorage.getItem('imagesJson');
   const images = imagesJson ? JSON.parse(imagesJson) : [EXAMPLE_IMAGE];
 
@@ -40,30 +39,28 @@ export default function App() {
     });
     setViewer(openSeaDragonViewer);
 
-    const overlay = new Overlay(openSeaDragonViewer);
+
 
     openSeaDragonViewer.addHandler('canvas-click', function (event) {
       if (event.quick) {
-        var point = event.position;
-        var vp =
+        const point = event.position;
+        const vp =
           openSeaDragonViewer.viewport.viewerElementToViewportCoordinates(
-            point
+            point,
           );
         console.log(vp);
         const existingTool = localStorage.getItem(drawingToolKey);
         if (existingTool === 'dot') {
-        
+          //dot
         }
         if (existingTool === 'image') {
-           
+          //image
         }
         if (existingTool === 'pin') {
-          
+          //pin
         }
-        if (existingTool === 'text') { 
+        if (existingTool === 'text') {
           setIsModalOpen(true);
-            
-          
         }
       }
     });
@@ -73,24 +70,21 @@ export default function App() {
     shape === undefined
       ? localStorage.removeItem(drawingToolKey)
       : localStorage.setItem(drawingToolKey, shape);
-  
+
     setActiveShape(shape);
   }, []);
   const onChangeHandler = event => {
-     
-      setInputValue(event.target.value);
- };
- const handleOk = () => {
-  
-   
-           setInputValue("")
-  setIsModalOpen(false);
-};
+    setInputValue(event.target.value);
+  };
+  const handleOk = () => {
+    setInputValue('');
+    setIsModalOpen(false);
+  };
 
-const handleCancel = () => {
-  setInputValue("")
-  setIsModalOpen(false);
-};
+  const handleCancel = () => {
+    setInputValue('');
+    setIsModalOpen(false);
+  };
   useEffect(() => {
     initOpenseadragon();
   }, []);
@@ -106,7 +100,7 @@ const handleCancel = () => {
     <div>
       <Radio.Group
         value={activeShape}
-        onChange={(e) =>
+        onChange={e =>
           e.target.value === 'stop'
             ? setShape(undefined)
             : setShape(e.target.value)
@@ -118,18 +112,24 @@ const handleCancel = () => {
         <Radio.Button value="text">Text</Radio.Button>
         <Radio.Button value="stop">STOP</Radio.Button>
       </Radio.Group>
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-      <TextArea
-      showCount
-      maxLength={100}
-      style={{
-        height: 120, 
-        width:"50%", 
-        resize: 'none', 
-       }}value={inputValue}
-      onChange={onChangeHandler}
-      placeholder="disable resize"
-    />
+      <Modal
+        title="Basic Modal"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <TextArea
+          showCount
+          maxLength={100}
+          style={{
+            height: 120,
+            width: '50%',
+            resize: 'none',
+          }}
+          value={inputValue}
+          onChange={onChangeHandler}
+          placeholder="disable resize"
+        />
       </Modal>
       <div
         id="openseadragon1"
@@ -139,9 +139,7 @@ const handleCancel = () => {
           width: '80vw',
           height: '80vh',
         }}
-      > 
-
-      </div>
+      ></div>
     </div>
   );
 }

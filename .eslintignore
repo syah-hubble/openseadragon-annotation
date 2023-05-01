@@ -1,0 +1,12 @@
+# don't ever lint node_modules
+node_modules
+# don't lint build output (make sure it's set to your correct build folder name)
+dist
+# don't lint nyc coverage output
+coverage
+# don't lint any dotfiles
+.*
+# don't lint any internal scripts
+internals/scripts
+# don't lint any config files
+*.config.js
