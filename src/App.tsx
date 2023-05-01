@@ -23,7 +23,7 @@ export default function App() {
   const [activeShape, setActiveShape] = useState<
     'dot' | 'image' | 'pin' | 'text' | undefined
   >(localStorage.getItem(drawingToolKey) as 'dot' | 'image');
-  const [viewer, setViewer] = useState<any>(null);
+  const [viewer, setViewer] = useState<OpenSeadragon.Viewer | null>(null);
   const imagesJson = localStorage.getItem('imagesJson');
   const images = imagesJson ? JSON.parse(imagesJson) : [EXAMPLE_IMAGE];
 

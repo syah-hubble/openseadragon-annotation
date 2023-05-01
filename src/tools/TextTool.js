@@ -1,5 +1,6 @@
 import OpenSeadragon, {  Placement, Point, Rect } from 'openseadragon';
 import DrawingTool, { Drawing } from './DrawingTool';
+import { drawingToolKey } from 'src/App';
 
 export default class TextTool extends DrawingTool {
   fontSize = 20;
@@ -14,7 +15,8 @@ export default class TextTool extends DrawingTool {
 
     viewer.addHandler('canvas-click', (event) => {
       console.log('canvas-click', event, event.quick);
-      if (this.tool !== 'text') {
+      const existingTool = localStorage.getItem(drawingToolKey);
+      if (existingTool!== 'text') {
         return;
       }
 
@@ -46,7 +48,7 @@ export default class TextTool extends DrawingTool {
         text,
         Placement.CENTER
       );
-      mouseTracker.pressHandler = (event) => {
+      mouseTracker.pressHandler = () => {
         text.focus();
       };
 
@@ -104,7 +106,7 @@ export default class TextTool extends DrawingTool {
         );
       });
 
-      text.onKey((event) => {
+      text.onKey(() => {
         //clear the height calculated by the dragging
         text.element.style.height = 'auto';
       });
