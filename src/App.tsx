@@ -3,7 +3,9 @@ import OpenSeadragon from 'openseadragon';
 import * as d3 from 'd3';
 import './style.css';
 import Overlay from './utils';
-import { Radio } from 'antd';
+import { Radio,Input,Modal } from 'antd';
+const { TextArea } = Input;
+
 const EXAMPLE_IMAGE = {
   id: 'randomId',
   filePath:
@@ -13,10 +15,14 @@ export const drawingToolKey = 'drawingTool';
 
 export default function App() {
   const imgEl = useRef<HTMLImageElement>(null);
+  const [inputValue, setInputValue] = React.useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [activeShape, setActiveShape] = useState<
-    'dot' | 'image' | 'pin' | undefined
+    'dot' | 'image' | 'pin' | 'text' | undefined
   >(localStorage.getItem(drawingToolKey) as 'dot' | 'image');
   const [viewer, setViewer] = useState<any>(null);
+  const [activePosition, setActivePosition] = useState<any>(null);
   const imagesJson = localStorage.getItem('imagesJson');
   const images = imagesJson ? JSON.parse(imagesJson) : [EXAMPLE_IMAGE];
 
@@ -70,15 +76,27 @@ export default function App() {
         }
         if (existingTool === 'pin') {
           d3.select(overlay.getNode())
-            .append('path')
-            .attr(
-              'd',
-              'M356.36,202.77c-3.45,201.59-303.3,201.56-306.72,0C53.09,1.19,352.94,1.22,356.36,202.77Z'
-            )
-            .attr('class', 'a9s-outer')
-            .attr('x', vp.x)
-            .attr('y', vp.y)
-            .size(47);
+          .append('image')
+          .attr(
+            'xlink:href',
+            ' https://res.cloudinary.com/shangyilim/image/upload/v1682511949/pin.png'
+          )
+          .attr('width', 0.05)
+          .attr('height', 0.05)
+          .attr('x', vp.x-0.025)
+          .attr('y', vp.y-0.05);
+        }
+        if (existingTool === 'text') {
+          setActivePosition(event.position)
+          setIsModalOpen(true);
+            
+          // d3.select(overlay.getNode())
+          // .append('text').attr('font-size', 0.05)
+          // .attr('fill','white')
+          //  .attr('id', 'commentary')
+          //  .attr('x', vp.x)
+          //  .attr('y', vp.y).append('tspan') .attr('x', vp.x)
+          //  .attr('y', vp.y).text("blah")
         }
       }
     });
@@ -88,9 +106,35 @@ export default function App() {
     shape === undefined
       ? localStorage.removeItem(drawingToolKey)
       : localStorage.setItem(drawingToolKey, shape);
+  
     setActiveShape(shape);
   }, []);
+  const onChangeHandler = event => {
+     
+      setInputValue(event.target.value);
+ };
+ const handleOk = () => {
+  const overlay = new Overlay(viewer);
+   
+  var vp =
+  viewer.viewport.viewerElementToViewportCoordinates(
+    activePosition
+    );
+  d3.select(overlay.getNode())
+          .append('text').attr('font-size', 0.05)
+          .attr('fill','white')
+           .attr('id', 'commentary')
+           .attr('x', vp.x)
+           .attr('y', vp.y).append('tspan') .attr('x', vp.x)
+           .attr('y', vp.y).text(inputValue)
+           setInputValue("")
+  setIsModalOpen(false);
+};
 
+const handleCancel = () => {
+  setInputValue("")
+  setIsModalOpen(false);
+};
   useEffect(() => {
     initOpenseadragon();
   }, []);
@@ -115,9 +159,22 @@ export default function App() {
         <Radio.Button value="dot">Dot</Radio.Button>
         <Radio.Button value="image">Image</Radio.Button>
         <Radio.Button value="pin">Pin</Radio.Button>
+        <Radio.Button value="text">Text</Radio.Button>
         <Radio.Button value="stop">STOP</Radio.Button>
       </Radio.Group>
-      {activeShape}
+      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <TextArea
+      showCount
+      maxLength={100}
+      style={{
+        height: 120, 
+        width:"50%", 
+        resize: 'none', 
+       }}value={inputValue}
+      onChange={onChangeHandler}
+      placeholder="disable resize"
+    />
+      </Modal>
       <div
         id="openseadragon1"
         className="tutu"
@@ -126,7 +183,9 @@ export default function App() {
           width: '80vw',
           height: '80vh',
         }}
-      ></div>
+      > 
+
+      </div>
     </div>
   );
 }

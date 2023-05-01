@@ -7,9 +7,10 @@ class Overlay {
   _containerHeight = 0;
   _svg: Element;
   _node: Element;
+  _canvas: Element;
   constructor(viewer: OpenSeadragon.Viewer) {
     this._viewer = viewer;
-
+    this._canvas=viewer.container;
     this._svg = document.createElementNS(svgNS, 'svg');
     this._svg.style.position = 'absolute';
     this._svg.style.left = 0;
@@ -39,6 +40,9 @@ class Overlay {
   getNode() {
     return this._node;
   }
+  getCanvas() {
+    return this._canvas;
+  }
   resize() {
     if (this._containerWidth !== this._viewer.container.clientWidth) {
       this._containerWidth = this._viewer.container.clientWidth;
@@ -57,7 +61,7 @@ class Overlay {
     var zoom = this._viewer.viewport.getZoom(true);
     var rotation = this._viewer.viewport.getRotation();
     // TODO: Expose an accessor for _containerInnerSize in the OSD API so we don't have to use the private variable.
-    var scale = this._viewer.viewport.getContainerSize().x * 1;
+    var scale = this._viewer.viewport.getContainerSize().x * zoom;
     this._node.setAttribute(
       'transform',
       'translate(' +
