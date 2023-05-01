@@ -1,3 +1,92 @@
-h1, p {
-  font-family: Lato;
+body {
+  font-family: 'IBMPlexSans', Fallback, sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.pinpoint-number {
+  position: absolute;
+  left: calc(33px / 4);
+  top: 9px;
+  width: 17px;
+  height: 17px;
+  border-radius: 17px;
+  background-color: white;
+  text-align: center;
+  font-size: 12px;
+}
+
+.annotation.selected {
+  cursor: grab;
+}
+.annotation-editor {
+  display: none;
+}
+.annotation.selected .annotation-editor {
+  display: block;
+  cursor: grab;
+}
+
+.annotation-editor .delete-btn {
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  width: 24px;
+  height: 24px;
+  background-image: url('https://res.cloudinary.com/shangyilim/image/upload/v1682511949/close.png');
+  background-size: contain;
+  background-color: transparent;
+  appearance: none;
+  border: none;
+}
+
+.annotation .text-input {
+  font-family: 'IBMPlexSans';
+  /* background-color: transparent;
+  border: none;
+  outline: none; */
+  outline: none;
+}
+
+.annotation.text {
+  padding: 6px 10px 6px 10px;
+  border-width: 2px;
+  border-color: transparent;
+  border-style: solid;
+  height: auto;
+}
+.annotation.text.selected {
+  border-width: 2px;
+  border-color: #3d55df;
+  border-style: solid;
+}
+.annotation.text.selected > .left-handle,
+.annotation.text.selected > .right-handle {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 14px;
+  border-width: 2px;
+  border-color: #ffffff;
+  background-color: #3d55df;
+  border-style: solid;
+}
+
+.annotation.text.selected > .left-handle:hover,
+.annotation.text.selected > .right-handle:hover {
+  cursor: ew-resize;
+}
+
+.annotation.text.selected > .left-handle {
+  left: -9px;
+  top: calc((100% / 2) - 9px);
+}
+.annotation.text.selected > .right-handle {
+  right: -9px;
+  top: calc((100% / 2) - 9px);
 }

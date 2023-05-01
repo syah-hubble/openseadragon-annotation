@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import OpenSeadragon from 'openseadragon';
+import PinpointTool from './tools/PinPointTool';
 import './style.css';
 import { Radio, Input, Modal } from 'antd';
 const { TextArea } = Input;
@@ -36,11 +37,18 @@ export default function App() {
       zoomPerScroll: 2,
       defaultZoomLevel: 1,
       zoomPerClick: 1,
+      homeFillsViewer: true,
+      gestureSettingsMouse: {
+        clickToZoom: false,
+      },
+      gestureSettingsTouch: {
+        clickToZoom: false,
+      },
     });
     setViewer(openSeaDragonViewer);
 
 
-
+    const pinpointTool = new PinpointTool(openSeaDragonViewer);
     openSeaDragonViewer.addHandler('canvas-click', function (event) {
       if (event.quick) {
         const point = event.position;
@@ -58,6 +66,7 @@ export default function App() {
         }
         if (existingTool === 'pin') {
           //pin
+          pinpointTool.setCurrentTool("pin");
         }
         if (existingTool === 'text') {
           setIsModalOpen(true);
