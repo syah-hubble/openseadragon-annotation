@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import OpenSeadragon from 'openseadragon';
-import * as d3 from 'd3';
+import OpenSeadragon from 'openseadragon'; 
 import './style.css';
 import Overlay from './utils';
 import { Radio,Input,Modal } from 'antd';
@@ -21,8 +20,7 @@ export default function App() {
   const [activeShape, setActiveShape] = useState<
     'dot' | 'image' | 'pin' | 'text' | undefined
   >(localStorage.getItem(drawingToolKey) as 'dot' | 'image');
-  const [viewer, setViewer] = useState<any>(null);
-  const [activePosition, setActivePosition] = useState<any>(null);
+  const [viewer, setViewer] = useState<any>(null); 
   const imagesJson = localStorage.getItem('imagesJson');
   const images = imagesJson ? JSON.parse(imagesJson) : [EXAMPLE_IMAGE];
 
@@ -54,49 +52,18 @@ export default function App() {
         console.log(vp);
         const existingTool = localStorage.getItem(drawingToolKey);
         if (existingTool === 'dot') {
-          d3.select(overlay.getNode())
-            .append('circle')
-            .style('fill', '#f00')
-            .attr('cx', vp.x)
-            .attr('cy', vp.y)
-            .attr('r', 0.02)
-            .style('opacity', 1);
+        
         }
         if (existingTool === 'image') {
-          d3.select(overlay.getNode())
-            .append('image')
-            .attr(
-              'xlink:href',
-              'https://m.media-amazon.com/images/I/41Bk064aTrL.jpg'
-            )
-            .attr('width', 0.1)
-            .attr('height', 0.1)
-            .attr('x', vp.x)
-            .attr('y', vp.y);
+           
         }
         if (existingTool === 'pin') {
-          d3.select(overlay.getNode())
-          .append('image')
-          .attr(
-            'xlink:href',
-            ' https://res.cloudinary.com/shangyilim/image/upload/v1682511949/pin.png'
-          )
-          .attr('width', 0.05)
-          .attr('height', 0.05)
-          .attr('x', vp.x-0.025)
-          .attr('y', vp.y-0.05);
+          
         }
-        if (existingTool === 'text') {
-          setActivePosition(event.position)
+        if (existingTool === 'text') { 
           setIsModalOpen(true);
             
-          // d3.select(overlay.getNode())
-          // .append('text').attr('font-size', 0.05)
-          // .attr('fill','white')
-          //  .attr('id', 'commentary')
-          //  .attr('x', vp.x)
-          //  .attr('y', vp.y).append('tspan') .attr('x', vp.x)
-          //  .attr('y', vp.y).text("blah")
+          
         }
       }
     });
@@ -114,19 +81,8 @@ export default function App() {
       setInputValue(event.target.value);
  };
  const handleOk = () => {
-  const overlay = new Overlay(viewer);
+  
    
-  var vp =
-  viewer.viewport.viewerElementToViewportCoordinates(
-    activePosition
-    );
-  d3.select(overlay.getNode())
-          .append('text').attr('font-size', 0.05)
-          .attr('fill','white')
-           .attr('id', 'commentary')
-           .attr('x', vp.x)
-           .attr('y', vp.y).append('tspan') .attr('x', vp.x)
-           .attr('y', vp.y).text(inputValue)
            setInputValue("")
   setIsModalOpen(false);
 };

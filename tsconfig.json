@@ -29,11 +29,5 @@
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": [
-    "app/**/*",
-    "internals/templates/**/*",
-    "app/types/jest-dom.d.ts",
-    "./setupTests.ts"
-  ],
   "exclude": ["node_modules", "**/*.js", "*.config.js"]
 }
