@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import OpenSeadragon from 'openseadragon';
+import OpenSeadragon, { Placement, Point } from 'openseadragon';
 import OpenSeadragonViewerInputHook from '@openseadragon-imaging/openseadragon-viewerinputhook';
 
-import PinpointTool from './tools/PinPointTool';
+import PinpointTool, { Pinpoint } from './tools/PinPointTool';
 import TextTool from './tools/TextTool';
 import './style.css';
-import { Radio } from 'antd';
+import { Button, Radio } from 'antd';
+import { annotationData } from './constants';
 
 
 const EXAMPLE_IMAGE = {
@@ -34,6 +35,7 @@ export default function App() {
       blendTime: 0.1,
       constrainDuringPan: true,
       maxZoomPixelRatio: 2,
+      minZoomLevel: 1,
       maxZoomLevel: 7,
       visibilityRatio: 1,
       zoomPerScroll: 2,
@@ -61,24 +63,25 @@ export default function App() {
       event.stopHandlers = true;
       event.preventDefaultAction = true;
     }
+    let minZoomLevel;
+    // get the default zoom  level
+    openSeaDragonViewer.addHandler('open', function () {
+      // get the min zoom level
+      minZoomLevel = openSeaDragonViewer.viewport.getZoom();
+    });
 
-    const pinpointTool = new PinpointTool(openSeaDragonViewer);
-    const textTool = new TextTool(openSeaDragonViewer);
-    openSeaDragonViewer.addHandler('canvas-click', function (event) {
-      if (event.quick) {
-        const point = event.position;
-        const vp =
-          openSeaDragonViewer.viewport.viewerElementToViewportCoordinates(
-            point,
-          );
-        console.log(vp);
-
-        pinpointTool.setCurrentTool("pin");
-        textTool.setCurrentTool("text", 12, "green");
-
-
+    openSeaDragonViewer.addHandler('zoom', function (event) {
+      // zoom happening beyond the minZoomLevel,
+      // overwrite the zoom level
+      if (event.zoom < minZoomLevel) {
+        openSeaDragonViewer.viewport.zoomTo(minZoomLevel);
       }
     });
+    const pinpointTool = new PinpointTool(openSeaDragonViewer);
+    const textTool = new TextTool(openSeaDragonViewer);
+    pinpointTool.setCurrentTool("pin");
+    textTool.setCurrentTool("text", 12, "green");
+
     return () => openSeaDragonViewer.destroy();
   };
   const setShape = useCallback(async (shape: 'dot' | 'image' | undefined) => {
@@ -88,6 +91,35 @@ export default function App() {
 
     setActiveShape(shape);
   }, []);
+
+  const onLoadAnnotation = () => {
+    if (viewer) {
+      console.log(annotationData)
+      annotationData.forEach((data) => {
+        const pinpoint = new Pinpoint(1);
+
+        pinpoint.onDeletePress(() => {
+
+          viewer.removeOverlay(pinpoint.element);
+
+
+        });
+        const viewportPoint = viewer.viewport.windowToViewportCoordinates(
+          new Point(data.x, data.y)
+        );
+
+
+        viewer.addOverlay({
+          element: pinpoint.element,
+          location: viewportPoint,
+          placement: Placement.CENTER,
+        });
+
+
+      })
+
+    }
+  }
 
   useEffect(() => {
     initOpenseadragon();
@@ -116,14 +148,14 @@ export default function App() {
         <Radio.Button value="text">Text</Radio.Button>
         <Radio.Button value="stop">STOP</Radio.Button>
       </Radio.Group>
-
+      <Button onClick={() => onLoadAnnotation()}>Load Annotation</Button>
       <div
         id="openseadragon1"
         className="tutu"
         ref={imgEl}
         style={{
-          width: '80vw',
-          height: '80vh',
+          width: '90vw',
+          height: '90vh',
         }}
       ></div>
     </div>

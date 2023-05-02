@@ -26,7 +26,7 @@ export default class PinpointTool extends DrawingTool {
       }
 
       this.viewer.panHorizontal = true;
-      this.viewer.panVertical = true;
+      this.viewer.panVertical = true; 
 
       const viewportPoint = viewer.viewport.windowToViewportCoordinates(
         new Point(event.position.x, event.position.y)
@@ -38,9 +38,9 @@ export default class PinpointTool extends DrawingTool {
         this.deleteDrawing(pinpoint);
       });
 
-      this.addDrawing(pinpoint, viewportPoint, Placement.BOTTOM);
+      this.addDrawing(pinpoint, viewportPoint, Placement.CENTER);
 
-      this.applyDefaultMouseTracking(pinpoint, Placement.BOTTOM);
+      this.applyDefaultMouseTracking(pinpoint, Placement.CENTER);
     });
   }
 }
