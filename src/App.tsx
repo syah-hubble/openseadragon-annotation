@@ -92,8 +92,9 @@ export default function App() {
     setActiveShape(shape);
   }, []);
 
-  const onLoadAnnotation = () => {
+  const onLoadAnnotation = async () => {
     if (viewer) {
+      viewer.viewport.goHome(true)
       console.log(annotationData)
       annotationData.forEach((data) => {
         const pinpoint = new Pinpoint(1);
