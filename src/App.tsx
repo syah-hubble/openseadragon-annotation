@@ -5,8 +5,8 @@ import OpenSeadragonViewerInputHook from '@openseadragon-imaging/openseadragon-v
 import PinpointTool from './tools/PinPointTool';
 import TextTool from './tools/TextTool';
 import './style.css';
-import { Radio, Input, Modal } from 'antd';
-const { TextArea } = Input;
+import { Radio } from 'antd';
+
 
 const EXAMPLE_IMAGE = {
   id: 'randomId',
@@ -17,8 +17,7 @@ export const drawingToolKey = 'drawingTool';
 
 export default function App() {
   const imgEl = useRef<HTMLImageElement>(null);
-  const [inputValue, setInputValue] = React.useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   const [activeShape, setActiveShape] = useState<
     'dot' | 'image' | 'pin' | 'text' | undefined
@@ -89,18 +88,7 @@ export default function App() {
 
     setActiveShape(shape);
   }, []);
-  const onChangeHandler = event => {
-    setInputValue(event.target.value);
-  };
-  const handleOk = () => {
-    setInputValue('');
-    setIsModalOpen(false);
-  };
 
-  const handleCancel = () => {
-    setInputValue('');
-    setIsModalOpen(false);
-  };
   useEffect(() => {
     initOpenseadragon();
   }, []);
@@ -128,25 +116,7 @@ export default function App() {
         <Radio.Button value="text">Text</Radio.Button>
         <Radio.Button value="stop">STOP</Radio.Button>
       </Radio.Group>
-      <Modal
-        title="Basic Modal"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <TextArea
-          showCount
-          maxLength={100}
-          style={{
-            height: 120,
-            width: '50%',
-            resize: 'none',
-          }}
-          value={inputValue}
-          onChange={onChangeHandler}
-          placeholder="disable resize"
-        />
-      </Modal>
+
       <div
         id="openseadragon1"
         className="tutu"
