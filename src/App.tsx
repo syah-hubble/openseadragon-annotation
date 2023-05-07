@@ -3,10 +3,10 @@ import OpenSeadragon, { Placement, Point } from 'openseadragon';
 import OpenSeadragonViewerInputHook from '@openseadragon-imaging/openseadragon-viewerinputhook';
 
 import PinpointTool, { Pinpoint } from './tools/PinPointTool';
-import FreehandToll from './tools/FreehandToll';
+import FreehandToll from './tools/FreehandTool';
 import TextTool from './tools/TextTool';
 import './style.css';
-import { Button, Radio } from 'antd';
+import { Badge, Button, Radio } from 'antd';
 import { annotationData, drawingToolKey } from './constants';
 
 
@@ -159,16 +159,23 @@ export default function App() {
         <Radio.Button value="stop">STOP</Radio.Button>
       </Radio.Group>
       <Button onClick={() => onLoadAnnotation()}>Load Annotation</Button>
-      {activeShape}
-      <div
-        id="openseadragon1"
-        className="tutu"
-        ref={imgEl}
+
+
+      <Badge.Ribbon text={activeShape}
         style={{
-          width: "768px",
-          height: "768px",
-        }}
-      ></div>
+          padding: 15,
+          display: activeShape ? "inherit" : "none"
+        }}>
+        <div
+          id="openseadragon1"
+          className="tutu"
+          ref={imgEl}
+          style={{
+            width: "768px",
+            height: "768px",
+          }}
+        ></div>
+      </Badge.Ribbon>
     </div>
 
   );

@@ -9,7 +9,7 @@ export default class FreehandTool extends DrawingTool {
   svg = null;
   path = null;
   canvasStartingPosition = null;
-  strokeColor = 'yellow';
+  strokeColor = 'red';
   strokeWidth = 5;
 
   constructor(viewer) {
