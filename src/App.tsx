@@ -165,6 +165,8 @@ export default function App() {
         className="tutu"
         ref={imgEl}
         style={{
+          width: "768px",
+          height: "768px",
         }}
       ></div>
     </div>
