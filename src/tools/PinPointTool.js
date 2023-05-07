@@ -1,6 +1,6 @@
 import  {   Placement, Point    } from 'openseadragon';
 import DrawingTool, { Drawing } from './DrawingTool';
-import { drawingToolKey } from 'src/App';
+import { drawingToolKey } from '../constants';
  
 const pin = "https://res.cloudinary.com/shangyilim/image/upload/v1682511949/pin.png";
 

@@ -3,26 +3,27 @@ import OpenSeadragon, { Placement, Point } from 'openseadragon';
 import OpenSeadragonViewerInputHook from '@openseadragon-imaging/openseadragon-viewerinputhook';
 
 import PinpointTool, { Pinpoint } from './tools/PinPointTool';
+import FreehandToll from './tools/FreehandToll';
 import TextTool from './tools/TextTool';
 import './style.css';
 import { Button, Radio } from 'antd';
-import { annotationData } from './constants';
+import { annotationData, drawingToolKey } from './constants';
 
 
 const EXAMPLE_IMAGE = {
   id: 'randomId',
   filePath:
-    'https://www.nps.gov/common/uploads/cropped_image/primary/4103A4CA-09D3-A4DC-FF31563D33AA3D1D.jpg?width=1600&quality=90&mode=crop',
+    'https://www.csustan.edu/sites/default/files/DIRECTORIES/Maps_n_Plans/Campus_Plans/Building/floor_plans/007-Theatre/theatre-lrg-1flr-2022.jpg',
 };
-export const drawingToolKey = 'drawingTool';
+
 
 export default function App() {
   const imgEl = useRef<HTMLImageElement>(null);
 
 
   const [activeShape, setActiveShape] = useState<
-    'dot' | 'image' | 'pin' | 'text' | undefined
-  >(localStorage.getItem(drawingToolKey) as 'dot' | 'image');
+    'dot' | 'freehand' | 'pin' | 'text' | undefined
+  >(localStorage.getItem(drawingToolKey) as 'dot' | 'freehand');
   const [viewer, setViewer] = useState<OpenSeadragon.Viewer | null>(null);
   const imagesJson = localStorage.getItem('imagesJson');
   const images = imagesJson ? JSON.parse(imagesJson) : [EXAMPLE_IMAGE];
@@ -79,12 +80,14 @@ export default function App() {
     });
     const pinpointTool = new PinpointTool(openSeaDragonViewer);
     const textTool = new TextTool(openSeaDragonViewer);
+    const freehandTool = new FreehandToll(openSeaDragonViewer);
     pinpointTool.setCurrentTool("pin");
+    freehandTool.setCurrentTool("freehand");
     textTool.setCurrentTool("text", 12, "green");
 
     return () => openSeaDragonViewer.destroy();
   };
-  const setShape = useCallback(async (shape: 'dot' | 'image' | undefined) => {
+  const setShape = useCallback(async (shape: 'dot' | 'freehand' | undefined) => {
     shape === undefined
       ? localStorage.removeItem(drawingToolKey)
       : localStorage.setItem(drawingToolKey, shape);
@@ -134,7 +137,13 @@ export default function App() {
     }
   }, [images, viewer]);
   return (
-    <div>
+
+    <div
+      style={{
+        width: "768px",
+        height: "768px",
+      }}
+    >
       <Radio.Group
         value={activeShape}
         onChange={e =>
@@ -144,21 +153,21 @@ export default function App() {
         }
       >
         <Radio.Button value="dot">Dot</Radio.Button>
-        <Radio.Button value="image">Image</Radio.Button>
+        <Radio.Button value="freehand">Freehand</Radio.Button>
         <Radio.Button value="pin">Pin</Radio.Button>
         <Radio.Button value="text">Text</Radio.Button>
         <Radio.Button value="stop">STOP</Radio.Button>
       </Radio.Group>
       <Button onClick={() => onLoadAnnotation()}>Load Annotation</Button>
+      {activeShape}
       <div
         id="openseadragon1"
         className="tutu"
         ref={imgEl}
         style={{
-          width: '90vw',
-          height: '90vh',
         }}
       ></div>
     </div>
+
   );
 }

@@ -1,6 +1,6 @@
 import OpenSeadragon, {  Placement, Point, Rect } from 'openseadragon';
 import DrawingTool, { Drawing } from './DrawingTool';
-import { drawingToolKey } from 'src/App';
+import { drawingToolKey } from '../constants';
 
 export default class TextTool extends DrawingTool {
   fontSize = 20;

@@ -14,3 +14,5 @@ export const duomo = {
 
 
 export const annotationData = [{name:"pin",x:410,y:287}] 
+
+export const drawingToolKey = 'drawingTool';

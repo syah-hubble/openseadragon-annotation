@@ -6,7 +6,7 @@ export default class DrawingTool {
   tool = '';
   dragging = false;
   pinching = false;  
-  constructor(viewer) { 
+  constructor(viewer) {  
     this.viewer = viewer;
     this.overlays = {};
 
