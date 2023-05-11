@@ -1,15 +1,15 @@
-import  {   Placement, Point    } from 'openseadragon';
+import { Placement, Point } from 'openseadragon';
 import DrawingTool, { Drawing } from './DrawingTool';
 import { drawingToolKey } from '../constants';
- 
-const pin = "https://res.cloudinary.com/shangyilim/image/upload/v1682511949/pin.png";
+
+const pin =
+  'https://res.cloudinary.com/shangyilim/image/upload/v1682511949/pin.png';
 
 export default class PinpointTool extends DrawingTool {
   constructor(viewer) {
     super(viewer);
 
- 
-    viewer.addHandler('canvas-click', (event) => {
+    viewer.addHandler('canvas-click', event => {
       console.log('canvas-click', event, event.quick);
       const existingTool = localStorage.getItem(drawingToolKey);
       if (existingTool !== 'pin') {
@@ -26,11 +26,11 @@ export default class PinpointTool extends DrawingTool {
       }
 
       this.viewer.panHorizontal = true;
-      this.viewer.panVertical = true; 
-
-      const viewportPoint = viewer.viewport.windowToViewportCoordinates(
-        new Point(event.position.x, event.position.y)
-      );
+      this.viewer.panVertical = true;
+ 
+      const offsetX = this.viewer.viewport.pointFromPixel(event.position).x;
+      const offsetY = this.viewer.viewport.pointFromPixel(event.position).y; 
+      const viewportPoint = new Point(offsetX, offsetY);
 
       var pinpoint = new Pinpoint(1);
 
@@ -38,7 +38,7 @@ export default class PinpointTool extends DrawingTool {
         this.deleteDrawing(pinpoint);
       });
 
-      this.addDrawing(pinpoint, viewportPoint, Placement.CENTER);
+      this.addDrawing(pinpoint, viewportPoint, Placement.BOTTOM); 
 
       this.applyDefaultMouseTracking(pinpoint, Placement.CENTER);
     });
@@ -48,7 +48,7 @@ export default class PinpointTool extends DrawingTool {
 export class Pinpoint extends Drawing {
   constructor(tag) {
     super();
- 
+
     const img = document.createElement('img');
     img.setAttribute('src', pin);
     img.setAttribute('width', 33);

@@ -11,6 +11,7 @@
     "antd": "^5.4.6",
     "openseadragon": "^4.0.0",
     "openseadragon-annotations": "^1.0.5",
+    "image-annotation": "git+ssh://git@gitlab.com:hubble-sg/platform/image-annotator#aa2cb61c",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
   },

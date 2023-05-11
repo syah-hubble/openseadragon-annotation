@@ -9,17 +9,14 @@ import './style.css';
 import { Badge, Button, Radio } from 'antd';
 import { annotationData, drawingToolKey } from './constants';
 
-
 const EXAMPLE_IMAGE = {
   id: 'randomId',
   filePath:
     'https://www.csustan.edu/sites/default/files/DIRECTORIES/Maps_n_Plans/Campus_Plans/Building/floor_plans/007-Theatre/theatre-lrg-1flr-2022.jpg',
 };
 
-
 export default function App() {
   const imgEl = useRef<HTMLImageElement>(null);
-
 
   const [activeShape, setActiveShape] = useState<
     'dot' | 'freehand' | 'pin' | 'text' | undefined
@@ -56,8 +53,16 @@ export default function App() {
       viewer: openSeaDragonViewer,
       hooks: [
         { tracker: 'viewer', handler: 'keyHandler', hookHandler: onViewerKey },
-        { tracker: 'viewer', handler: 'keyUpHandler', hookHandler: onViewerKey },
-        { tracker: 'viewer', handler: 'keyDownHandler', hookHandler: onViewerKey },
+        {
+          tracker: 'viewer',
+          handler: 'keyUpHandler',
+          hookHandler: onViewerKey,
+        },
+        {
+          tracker: 'viewer',
+          handler: 'keyDownHandler',
+          hookHandler: onViewerKey,
+        },
       ],
     });
     function onViewerKey(event) {
@@ -81,49 +86,45 @@ export default function App() {
     const pinpointTool = new PinpointTool(openSeaDragonViewer);
     const textTool = new TextTool(openSeaDragonViewer);
     const freehandTool = new FreehandToll(openSeaDragonViewer);
-    pinpointTool.setCurrentTool("pin");
-    freehandTool.setCurrentTool("freehand");
-    textTool.setCurrentTool("text", 12, "green");
+    pinpointTool.setCurrentTool('pin');
+    freehandTool.setCurrentTool('freehand');
+    textTool.setCurrentTool('text', 12, 'green');
 
     return () => openSeaDragonViewer.destroy();
   };
-  const setShape = useCallback(async (shape: 'dot' | 'freehand' | undefined) => {
-    shape === undefined
-      ? localStorage.removeItem(drawingToolKey)
-      : localStorage.setItem(drawingToolKey, shape);
+  const setShape = useCallback(
+    async (shape: 'dot' | 'freehand' | undefined) => {
+      shape === undefined
+        ? localStorage.removeItem(drawingToolKey)
+        : localStorage.setItem(drawingToolKey, shape);
 
-    setActiveShape(shape);
-  }, []);
+      setActiveShape(shape);
+    },
+    [],
+  );
 
   const onLoadAnnotation = async () => {
     if (viewer) {
-      viewer.viewport.goHome(true)
-      console.log(annotationData)
-      annotationData.forEach((data) => {
+      viewer.viewport.goHome(true);
+      console.log(annotationData);
+      annotationData.forEach(data => {
         const pinpoint = new Pinpoint(1);
 
         pinpoint.onDeletePress(() => {
-
           viewer.removeOverlay(pinpoint.element);
-
-
         });
         const viewportPoint = viewer.viewport.windowToViewportCoordinates(
-          new Point(data.x, data.y)
+          new Point(data.x, data.y),
         );
-
 
         viewer.addOverlay({
           element: pinpoint.element,
           location: viewportPoint,
           placement: Placement.CENTER,
         });
-
-
-      })
-
+      });
     }
-  }
+  };
 
   useEffect(() => {
     initOpenseadragon();
@@ -137,11 +138,10 @@ export default function App() {
     }
   }, [images, viewer]);
   return (
-
     <div
       style={{
-        width: "768px",
-        height: "768px",
+        width: '768px',
+        height: '768px',
       }}
     >
       <Radio.Group
@@ -159,24 +159,29 @@ export default function App() {
         <Radio.Button value="stop">STOP</Radio.Button>
       </Radio.Group>
       <Button onClick={() => onLoadAnnotation()}>Load Annotation</Button>
+      <div
+        style={{
+          height: '10vh',
+        }}
+      />
 
-
-      <Badge.Ribbon text={activeShape}
+      <Badge.Ribbon
+        text={activeShape}
         style={{
           padding: 15,
-          display: activeShape ? "inherit" : "none"
-        }}>
+          display: activeShape ? 'inherit' : 'none',
+        }}
+      >
         <div
           id="openseadragon1"
           className="tutu"
           ref={imgEl}
           style={{
-            width: "768px",
-            height: "768px",
+            width: '768px',
+            height: '768px',
           }}
         ></div>
       </Badge.Ribbon>
     </div>
-
   );
 }
