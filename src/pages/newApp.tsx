@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { ImageAnnotator } from 'image-annotation';
 
 import { Badge, Button, Radio } from 'antd';
-import { drawingToolKey } from './constants';
+import { drawingToolKey } from '../constants';
 
 const EXAMPLE_IMAGE = {
   id: 'randomId',
