@@ -7,7 +7,7 @@
     "preserveConstEnums": true,
     "baseUrl": ".",
     "jsx": "react", // process JSX
-    "lib": ["dom", "es5", "es6", "es7", "es2017"],
+    "lib": ["dom", "es5", "es6", "es7", "es2017", "DOM.Iterable"],
     "allowSyntheticDefaultImports": true, // no errors with commonjs modules interop
     "esModuleInterop": true,
     "allowJs": true, // include js files

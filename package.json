@@ -13,6 +13,7 @@
     "image-annotation": "git+ssh://git@gitlab.com:hubble-sg/platform/image-annotator#11638d49",
     "openseadragon": "^4.0.0",
     "openseadragon-annotations": "^1.0.5",
+    "pdfjs-dist-es5": "^2.13.216",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-router-dom": "^6.11.1"
