@@ -7,7 +7,7 @@ import { drawingToolKey } from '../constants';
 const EXAMPLE_IMAGE = {
   id: 'randomId',
   filePath:
-    'https://www.csustan.edu/sites/default/files/DIRECTORIES/Maps_n_Plans/Campus_Plans/Building/floor_plans/007-Theatre/theatre-lrg-1flr-2022.jpg',
+    'https://images.squarespace-cdn.com/content/v1/5bdde6530dbda3230ba6bd5d/1582757759192-V5GJC3HRY3JNN65M2R0W/FloorPlan.png?format=1000w',
 };
 
 export default function App() {

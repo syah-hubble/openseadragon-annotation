@@ -43,11 +43,8 @@ const PDFViewer = (props: { pdf: PDFJS.PDFDocumentProxy }) => {
     },
     [],
   );
-  useEffect(() => {
-    if (!viewerContainerRef.current) return;
-    // calculate optimal zoom level to fit the page width
-    // getFitScale(props.pdf, viewerContainerRef).then(() => void 0);
-    pdf.getPage(1).then(page => {
+  const renderPage = pageNum => {
+    pdf.getPage(pageNum).then(page => {
       const viewport = page.getViewport({ scale: 1 });
       const outputScale = window.devicePixelRatio || 1;
       const existingCanvas =
@@ -78,7 +75,7 @@ const PDFViewer = (props: { pdf: PDFJS.PDFDocumentProxy }) => {
         console.log(renderContext);
         const imgAnnotator = new ImageAnnotator();
         console.log(imgAnnotator);
-        imgAnnotator.id = 'openseadragon1';
+        imgAnnotator.id = 'openseadragon1 ' + pageNum;
         imgAnnotator.src = canvas.toDataURL();
         imgAnnotator.width = '100%';
         imgAnnotator.height = '100%';
@@ -122,6 +119,13 @@ const PDFViewer = (props: { pdf: PDFJS.PDFDocumentProxy }) => {
         });
       });
     });
+  };
+  useEffect(() => {
+    if (!viewerContainerRef.current) return;
+    // calculate optimal zoom level to fit the page width
+    // getFitScale(props.pdf, viewerContainerRef).then(() => void 0);
+
+    for (let num = 1; num <= pdf.numPages; num++) renderPage(num);
   }, [pdf]);
 
   return (
@@ -139,7 +143,14 @@ const PDFViewer = (props: { pdf: PDFJS.PDFDocumentProxy }) => {
         <Radio.Button value="text">Text</Radio.Button>
         <Radio.Button value="stop">STOP</Radio.Button>
       </Radio.Group>
-      <Button onClick={() => void 0}>Load Annotation</Button> {activeShape}
+      <Button
+        onClick={() => {
+          window.dispatchEvent(new CustomEvent('ext-getAnnotations'));
+        }}
+      >
+        Load Annotation
+      </Button>{' '}
+      {activeShape}
       <div
         ref={viewerContainerRef}
         style={{

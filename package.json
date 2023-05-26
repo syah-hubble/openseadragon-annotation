@@ -10,7 +10,7 @@
     "@types/react-dom": "^18.0.2",
     "@types/react-router-dom": "^5.3.3",
     "antd": "^5.4.6",
-    "image-annotation": "git+ssh://git@gitlab.com:hubble-sg/platform/image-annotator#11638d49",
+    "image-annotation": "git+ssh://git@gitlab.com:hubble-sg/platform/image-annotator#919e3a45",
     "openseadragon": "^4.0.0",
     "openseadragon-annotations": "^1.0.5",
     "pdfjs-dist-es5": "^2.13.216",

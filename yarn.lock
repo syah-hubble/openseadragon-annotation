@@ -5169,9 +5169,9 @@ ignore@^5.2.0:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.4.tgz#a291c0c6178ff1b960befe47fcdec301674a6324"
   integrity sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==
 
-"image-annotation@git+ssh://git@gitlab.com:hubble-sg/platform/image-annotator#11638d49":
-  version "0.0.1"
-  resolved "git+ssh://git@gitlab.com:hubble-sg/platform/image-annotator#11638d491135ad2d3b1de63439b6448c9f340694"
+"image-annotation@git+ssh://git@gitlab.com:hubble-sg/platform/image-annotator#919e3a45":
+  version "0.0.3"
+  resolved "git+ssh://git@gitlab.com:hubble-sg/platform/image-annotator#919e3a45b4f43e9661ce02a3220f4885a53d36ee"
   dependencies:
     "@openseadragon-imaging/openseadragon-viewerinputhook" "^2.2.1"
     "@svgdotjs/svg.js" "^3.1.2"
